@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "rabbitmq.queue",
+    "type": "java.lang.String",
+    "description": "A description for 'rabbitmq.queue'"
+  },
+  {
+    "name": "rabbitmq.exchange",
+    "type": "java.lang.String",
+    "description": "A description for 'rabbitmq.exchange'"
+  }
+]}
