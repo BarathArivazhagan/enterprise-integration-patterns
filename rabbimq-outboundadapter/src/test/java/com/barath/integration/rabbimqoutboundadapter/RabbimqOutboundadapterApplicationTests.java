@@ -1,4 +1,4 @@
-package com.barath.integration.app;
+package com.barath.integration.rabbimqoutboundadapter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class RabbitmqAdapterPatternApplicationTests {
+public class RabbimqOutboundadapterApplicationTests {
 
 	@Test
 	public void contextLoads() {
