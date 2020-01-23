@@ -17,62 +17,69 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.integration.amqp.dsl.Amqp;
 import org.springframework.integration.amqp.outbound.AmqpOutboundEndpoint;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
-import org.springframework.integration.dsl.amqp.Amqp;
-import org.springframework.integration.dsl.support.GenericHandler;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
 import org.springframework.stereotype.Component;
 
+/**
+ * The Class FlowConfiguration.
+ */
 @Configuration
 public class FlowConfiguration {
-	
+
+	/** The response queue. */
 	@Value("${rabbitmq.response.queue}")
 	private String responseQueue;
-	
+
+	/** The response exchange. */
 	@Value("${rabbitmq.response.exchange}")
-	private String responseExchange;	
-	
-	
+	private String responseExchange;
+
+	/**
+	 * Input channel.
+	 *
+	 * @return the message channel
+	 */
 	@Bean
-	public MessageChannel inputChannel(){
+	public MessageChannel inputChannel() {
 		return new DirectChannel();
 	}
-	
+
+	/** The connection factory. */
 	@Autowired
 	private ConnectionFactory connectionFactory;
-	
-	
-	
-	@Bean
-	public IntegrationFlow publisherFlow(AmqpTemplate amqpTemplate){
-		
-		return IntegrationFlows
-					.from(inputChannel())
-					.handle(Amqp.outboundAdapter(amqpTemplate).exchangeName(responseExchange))					
-					.get();
-	}
-	
-	@Bean
-	public IntegrationFlow subscriberFlow(){
-		
-		return IntegrationFlows
-					.from(Amqp.inboundAdapter(connectionFactory, responseQueue))
-					.handle( r -> {
-						System.out.println("r "+r);
-					})					
-					.get();
-	}
-	
-	
 
-	
-	
-	
+	/**
+	 * Publisher flow.
+	 *
+	 * @param amqpTemplate the amqp template
+	 * @return the integration flow
+	 */
+	@Bean
+	public IntegrationFlow publisherFlow(AmqpTemplate amqpTemplate) {
+
+		return IntegrationFlows.from(inputChannel())
+				.handle(Amqp.outboundAdapter(amqpTemplate).exchangeName(responseExchange)).get();
+	}
+
+	/**
+	 * Subscriber flow.
+	 *
+	 * @return the integration flow
+	 */
+	@Bean
+	public IntegrationFlow subscriberFlow() {
+
+		return IntegrationFlows.from(Amqp.inboundAdapter(connectionFactory, responseQueue)).handle(r -> {
+			System.out.println("r " + r);
+		}).get();
+	}
 
 }

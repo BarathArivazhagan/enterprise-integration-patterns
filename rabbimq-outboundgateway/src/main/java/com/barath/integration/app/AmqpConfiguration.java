@@ -8,37 +8,49 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * The Class AmqpConfiguration.
+ */
 @Configuration
 public class AmqpConfiguration {
-	
+
+	/** The queue. */
 	@Value("${rabbitmq.queue}")
 	private String queue;
-	
-	@Value("${rabbitmq.exchange}")
-	private String exchange;	
-	
-		
-	
-	@Bean
-	public Queue queue(){
-		return new Queue(queue,true);
-	}
-	
 
+	/** The exchange. */
+	@Value("${rabbitmq.exchange}")
+	private String exchange;
+
+	/**
+	 * Queue.
+	 *
+	 * @return the queue
+	 */
 	@Bean
-	public TopicExchange exchange(){
+	public Queue queue() {
+		return new Queue(queue, true);
+	}
+
+	/**
+	 * Exchange.
+	 *
+	 * @return the topic exchange
+	 */
+	@Bean
+	public TopicExchange exchange() {
 		return new TopicExchange(exchange, true, true);
 	}
-	
-	
-	
+
+	/**
+	 * Bind qto exchange.
+	 *
+	 * @return the binding
+	 */
 	@Bean
-	public Binding bindQtoExchange(){
-		
+	public Binding bindQtoExchange() {
+
 		return BindingBuilder.bind(queue()).to(exchange()).with(queue);
 	}
-	
-	
-	
 
 }

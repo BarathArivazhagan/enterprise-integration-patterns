@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
-import org.springframework.integration.dsl.support.Function;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 
@@ -15,52 +14,82 @@ import org.springframework.messaging.MessageChannel;
 @Configuration
 public class FlowConfiguration {
 
-    @Bean
-    public MessageChannel inputChannel(){
-        return new DirectChannel();
-    }
+	/**
+	 * Input channel.
+	 *
+	 * @return the message channel
+	 */
+	@Bean
+	public MessageChannel inputChannel() {
+		return new DirectChannel();
+	}
 
-    @Bean
-    public MessageChannel orderSuccessChannel(){
-        return new DirectChannel();
-    }
+	/**
+	 * Order success channel.
+	 *
+	 * @return the message channel
+	 */
+	@Bean
+	public MessageChannel orderSuccessChannel() {
+		return new DirectChannel();
+	}
 
-    @Bean
-    public MessageChannel orderCancelledChannel(){
-        return new DirectChannel();
-    }
+	/**
+	 * Order cancelled channel.
+	 *
+	 * @return the message channel
+	 */
+	@Bean
+	public MessageChannel orderCancelledChannel() {
+		return new DirectChannel();
+	}
 
-    @Bean
-    public MessageChannel orderPendingChannel(){
-        return new DirectChannel();
-    }
+	/**
+	 * Order pending channel.
+	 *
+	 * @return the message channel
+	 */
+	@Bean
+	public MessageChannel orderPendingChannel() {
+		return new DirectChannel();
+	}
 
+	/**
+	 * Success flow.
+	 *
+	 * @return the integration flow
+	 */
+	@Bean
+	public IntegrationFlow successFlow() {
 
+		return IntegrationFlows.from(orderSuccessChannel()).handle((Message<?> message) -> {
+			System.out.println("MESSAGE RECEIVED " + message + "  STATUS : SUCCESS");
+		}).get();
+	}
 
-    @Bean
-    public IntegrationFlow successFlow(){
+	/**
+	 * Cancel flow.
+	 *
+	 * @return the integration flow
+	 */
+	@Bean
+	public IntegrationFlow cancelFlow() {
 
-        return IntegrationFlows.from(orderSuccessChannel())
-               .handle( (Message<?> message) ->{
-                   System.out.println("MESSAGE RECEIVED "+message+"  STATUS : SUCCESS");
-               }).get();
-    }
+		return IntegrationFlows.from(orderCancelledChannel()).handle((Message<?> message) -> {
+			System.out.println("MESSAGE RECEIVED " + message + "  STATUS : CANCELLED");
+		}).get();
+	}
 
-    @Bean
-    public IntegrationFlow cancelFlow(){
+	/**
+	 * Pending flow.
+	 *
+	 * @return the integration flow
+	 */
+	@Bean
+	public IntegrationFlow pendingFlow() {
 
-        return IntegrationFlows.from(orderCancelledChannel())
-                .handle( (Message<?> message) ->{
-                    System.out.println("MESSAGE RECEIVED "+message+"  STATUS : CANCELLED");
-                }).get();
-    }
-
-    @Bean
-    public IntegrationFlow pendingFlow(){
-
-        return IntegrationFlows.from(orderPendingChannel())
-                .handle( (Message<?> message) ->{
-                    System.out.println("MESSAGE RECEIVED "+message+"  STATUS : PENDING");
-                }).get();
-    }
+		return IntegrationFlows.from(orderPendingChannel()).handle((Message<?> message) -> {
+			System.out.println("MESSAGE RECEIVED " + message + "  STATUS : PENDING");
+		}).get();
+	}
 }
