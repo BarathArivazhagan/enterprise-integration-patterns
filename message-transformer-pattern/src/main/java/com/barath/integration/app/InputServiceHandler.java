@@ -9,34 +9,49 @@ import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.MessagingException;
 import org.springframework.stereotype.Component;
 
+/**
+ * The Class InputServiceHandler.
+ */
 @Component
-public class InputServiceHandler{
-	
+public class InputServiceHandler {
 
-	private static final Logger logger=LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	/** The Constant logger. */
+	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	
-	@ServiceActivator(outputChannel="outputChannel")
+	/**
+	 * To json.
+	 *
+	 * @param customerJson the customer json
+	 * @return the string
+	 * @throws MessagingException the messaging exception
+	 */
+	@ServiceActivator(outputChannel = "outputChannel")
 	public String toJson(String customerJson) throws MessagingException {
-		
-		if(customerJson != null && logger.isInfoEnabled()){
-			logger.info("customer json  {}",customerJson);
+
+		if (customerJson != null && logger.isInfoEnabled()) {
+			logger.info("customer json  {}", customerJson);
 		}
-		
+
 		return customerJson;
-		
+
 	}
-	
-	@ServiceActivator(outputChannel="nullChannel1",requiresReply="false")
+
+	/**
+	 * From json.
+	 *
+	 * @param customer the customer
+	 * @return the customer
+	 * @throws MessagingException the messaging exception
+	 */
+	@ServiceActivator(outputChannel = "nullChannel1", requiresReply = "false")
 	public Customer fromJson(Customer customer) throws MessagingException {
-		
-		if(customer != null && logger.isInfoEnabled()){
-			logger.info("customer object {}",customer.toString());
+
+		if (customer != null && logger.isInfoEnabled()) {
+			logger.info("customer object {}", customer.toString());
 		}
-		
+
 		return customer;
-		
-		
+
 	}
 
 }

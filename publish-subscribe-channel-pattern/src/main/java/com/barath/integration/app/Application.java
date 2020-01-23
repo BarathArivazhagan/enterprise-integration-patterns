@@ -7,20 +7,35 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.MessageChannel;
 
+/**
+ * The Class Application.
+ */
 @SpringBootApplication
-public class Application  implements CommandLineRunner {
+public class Application implements CommandLineRunner {
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
-	
+
+	/** The publisher channel. */
 	@Autowired
 	private MessageChannel publisherChannel;
 
+	/**
+	 * Run.
+	 *
+	 * @param args the args
+	 * @throws Exception the exception
+	 */
 	@Override
 	public void run(String... args) throws Exception {
-		
+
 		publisherChannel.send(MessageBuilder.withPayload(" Hello Sender ").build());
-		
+
 	}
 }

@@ -5,93 +5,179 @@ package com.barath.app;
  */
 public class Order {
 
-    private Long orderId;
+	/** The order id. */
+	private Long orderId;
 
-    private String productName;
+	/** The product name. */
+	private String productName;
 
-    private String locationName;
+	/** The location name. */
+	private String locationName;
 
-    private int quantity;
+	/** The quantity. */
+	private int quantity;
 
-    private Double amount;
+	/** The amount. */
+	private Double amount;
 
-    private OrderStatus status;
+	/** The status. */
+	private OrderStatus status;
 
-    public enum OrderStatus{
-        SUCCESS,
-        CANCELLED,
-        PENDING
-    }
+	/**
+	 * The Enum OrderStatus.
+	 */
+	public enum OrderStatus {
 
-    public Long getOrderId() {
-        return orderId;
-    }
+		/** The success. */
+		SUCCESS,
+		/** The cancelled. */
+		CANCELLED,
+		/** The pending. */
+		PENDING
+	}
 
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
+	/**
+	 * Gets the order id.
+	 *
+	 * @return the order id
+	 */
+	public Long getOrderId() {
+		return orderId;
+	}
 
-    public String getProductName() {
-        return productName;
-    }
+	/**
+	 * Sets the order id.
+	 *
+	 * @param orderId the new order id
+	 */
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
+	/**
+	 * Gets the product name.
+	 *
+	 * @return the product name
+	 */
+	public String getProductName() {
+		return productName;
+	}
 
-    public String getLocationName() {
-        return locationName;
-    }
+	/**
+	 * Sets the product name.
+	 *
+	 * @param productName the new product name
+	 */
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
 
-    public void setLocationName(String locationName) {
-        this.locationName = locationName;
-    }
+	/**
+	 * Gets the location name.
+	 *
+	 * @return the location name
+	 */
+	public String getLocationName() {
+		return locationName;
+	}
 
-    public int getQuantity() {
-        return quantity;
-    }
+	/**
+	 * Sets the location name.
+	 *
+	 * @param locationName the new location name
+	 */
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+	/**
+	 * Gets the quantity.
+	 *
+	 * @return the quantity
+	 */
+	public int getQuantity() {
+		return quantity;
+	}
 
-    public Double getAmount() {
-        return amount;
-    }
+	/**
+	 * Sets the quantity.
+	 *
+	 * @param quantity the new quantity
+	 */
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
+	/**
+	 * Gets the amount.
+	 *
+	 * @return the amount
+	 */
+	public Double getAmount() {
+		return amount;
+	}
 
-    public OrderStatus getStatus() {
-        return status;
-    }
+	/**
+	 * Sets the amount.
+	 *
+	 * @param amount the new amount
+	 */
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
 
-    public void setStatus(OrderStatus status) {
-        this.status = status;
-    }
+	/**
+	 * Gets the status.
+	 *
+	 * @return the status
+	 */
+	public OrderStatus getStatus() {
+		return status;
+	}
 
-    public Order(Long orderId, String productName, String locationName, int quantity, Double amount, OrderStatus status) {
-        this.orderId = orderId;
-        this.productName = productName;
-        this.locationName = locationName;
-        this.quantity = quantity;
-        this.amount = amount;
-        this.status = status;
-    }
+	/**
+	 * Sets the status.
+	 *
+	 * @param status the new status
+	 */
+	public void setStatus(OrderStatus status) {
+		this.status = status;
+	}
 
-    public Order() {
-    }
+	/**
+	 * Instantiates a new order.
+	 *
+	 * @param orderId      the order id
+	 * @param productName  the product name
+	 * @param locationName the location name
+	 * @param quantity     the quantity
+	 * @param amount       the amount
+	 * @param status       the status
+	 */
+	public Order(Long orderId, String productName, String locationName, int quantity, Double amount,
+			OrderStatus status) {
+		this.orderId = orderId;
+		this.productName = productName;
+		this.locationName = locationName;
+		this.quantity = quantity;
+		this.amount = amount;
+		this.status = status;
+	}
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "orderId=" + orderId +
-                ", productName='" + productName + '\'' +
-                ", locationName='" + locationName + '\'' +
-                ", quantity=" + quantity +
-                ", amount=" + amount +
-                ", status=" + status +
-                '}';
-    }
+	/**
+	 * Instantiates a new order.
+	 */
+	public Order() {
+	}
+
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
+	@Override
+	public String toString() {
+		return "Order{" + "orderId=" + orderId + ", productName='" + productName + '\'' + ", locationName='"
+				+ locationName + '\'' + ", quantity=" + quantity + ", amount=" + amount + ", status=" + status + '}';
+	}
 }

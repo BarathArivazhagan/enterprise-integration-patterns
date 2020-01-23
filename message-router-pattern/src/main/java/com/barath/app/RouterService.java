@@ -15,25 +15,34 @@ import java.util.Optional;
 @Service
 public class RouterService {
 
-    private static  final Logger logger= LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	/** The Constant logger. */
+	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    @Router(inputChannel = "inputChannel")
-    public String routeToChannel(Message message){
+	/**
+	 * Route to channel.
+	 *
+	 * @param message the message
+	 * @return the string
+	 */
+	@Router(inputChannel = "inputChannel")
+	public String routeToChannel(Message message) {
 
+		Order order = (Order) message.getPayload();
+		if (logger.isInfoEnabled()) {
+			logger.info("Order {}", order);
+		}
+		switch (order.getStatus()) {
 
-        Order order=(Order)message.getPayload();
-        if(logger.isInfoEnabled()){
-            logger.info("Order {}",order);
-        }
-        switch (order.getStatus()){
+		case PENDING:
+			return "orderPendingChannel";
+		case SUCCESS:
+			return "orderSuccessChannel";
+		case CANCELLED:
+			return "orderCancelledChannel";
+		default:
+			return "orderPendingChannel";
+		}
 
-            case PENDING: return "orderPendingChannel";
-            case SUCCESS: return "orderSuccessChannel";
-            case CANCELLED: return "orderCancelledChannel";
-            default : return "orderPendingChannel";
-        }
-
-    }
-
+	}
 
 }

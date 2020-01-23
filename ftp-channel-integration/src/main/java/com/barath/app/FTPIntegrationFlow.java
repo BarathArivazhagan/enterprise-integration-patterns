@@ -1,6 +1,5 @@
 package com.barath.app;
 
-
 import org.apache.commons.net.ftp.FTPFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,46 +23,82 @@ import java.io.File;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 
+/**
+ * The Class FTPIntegrationFlow.
+ */
 @Configuration
 public class FTPIntegrationFlow {
 
-    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	/** The Constant logger. */
+	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    @Autowired
-    private ResourceLoader resourceLoader;
+	/** The resource loader. */
+	@Autowired
+	private ResourceLoader resourceLoader;
 
-    @Value("${ftp.remote.dir}")
-    private String remoteDir;
+	/** The remote dir. */
+	@Value("${ftp.remote.dir}")
+	private String remoteDir;
 
-    @Bean
-    public SessionFactory<FTPFile> ftpSessionFactory(@Value("${ftp.host}") String host, @Value("${ftp.username}") String username, @Value("${ftp.password}") String password) {
-        DefaultFtpSessionFactory sf = new DefaultFtpSessionFactory();
-        sf.setHost(host);
-        sf.setUsername(username);
-        sf.setPassword(password);
-        return new CachingSessionFactory<>(sf);
-    }
+	/**
+	 * Ftp session factory.
+	 *
+	 * @param host     the host
+	 * @param username the username
+	 * @param password the password
+	 * @return the session factory
+	 */
+	@Bean
+	public SessionFactory<FTPFile> ftpSessionFactory(@Value("${ftp.host}") String host,
+			@Value("${ftp.username}") String username, @Value("${ftp.password}") String password) {
+		DefaultFtpSessionFactory sf = new DefaultFtpSessionFactory();
+		sf.setHost(host);
+		sf.setUsername(username);
+		sf.setPassword(password);
+		return new CachingSessionFactory<>(sf);
+	}
 
-    @Bean
-    public IntegrationFlow ftpOutboundFlow(SessionFactory ftpSessionFactory ) {
+	/**
+	 * Ftp outbound flow.
+	 *
+	 * @param ftpSessionFactory the ftp session factory
+	 * @return the integration flow
+	 */
+	@Bean
+	public IntegrationFlow ftpOutboundFlow(SessionFactory ftpSessionFactory) {
 
-        if(logger.isInfoEnabled()) { logger.info(" defining integration flow start"); }
-        return IntegrationFlows.from("inputChannel")
-                .handle(Ftp.outboundAdapter(ftpSessionFactory, FileExistsMode.REPLACE)
-                        .useTemporaryFileName(false)
-                        .remoteDirectory(remoteDir)
-                ).get();
+		if (logger.isInfoEnabled()) {
+			logger.info(" defining integration flow start");
+		}
+		return IntegrationFlows.from("inputChannel")
+				.handle(Ftp.outboundAdapter(ftpSessionFactory, FileExistsMode.REPLACE).useTemporaryFileName(false)
+						.remoteDirectory(remoteDir))
+				.get();
 
-    }
+	}
 
-    @Bean
-    public MessageChannel inputChannel(){
-        return new DirectChannel();
-    }
+	/**
+	 * Input channel.
+	 *
+	 * @return the message channel
+	 */
+	@Bean
+	public MessageChannel inputChannel() {
+		return new DirectChannel();
+	}
 
-    public File getResource(String fileLocation) throws Exception{
-        if(logger.isInfoEnabled()) { logger.info(" load the resource with file location {}", fileLocation); }
-        return resourceLoader.getResource(fileLocation).getFile();
-    }
+	/**
+	 * Gets the resource.
+	 *
+	 * @param fileLocation the file location
+	 * @return the resource
+	 * @throws Exception the exception
+	 */
+	public File getResource(String fileLocation) throws Exception {
+		if (logger.isInfoEnabled()) {
+			logger.info(" load the resource with file location {}", fileLocation);
+		}
+		return resourceLoader.getResource(fileLocation).getFile();
+	}
 
 }
